@@ -47,6 +47,8 @@ jobs:
         run: go build -v -o weworkbot-linux-ppc64 .
       - name: Build-linux-ppc64le
         run: go build -v -o weworkbot-linux-ppc64le .
+      - name: Build-linux-loong64
+        run: go build -v -o weworkbot-linux-loong64 .
       - name: Build-netbsd-386
         run: go build -v -o weworkbot-netbsd-386 .
       - name: Build-netbsd-amd64
@@ -94,6 +96,7 @@ jobs:
             weworkbot-linux-arm64
             weworkbot-linux-ppc64
             weworkbot-linux-ppc64le
+            weworkbot-linux-loong64
             weworkbot-netbsd-386
             weworkbot-netbsd-amd64
             weworkbot-netbsd-arm
