@@ -19,8 +19,56 @@ jobs:
         with:
           go-version: "1.21"
 
-      - name: Build
-        run: go build -v -o weworkbot .
+      - name: Build-darwin-386
+        run: go build -v -o weworkbot-darwin-386 .
+      - name: Build-darwin-amd64
+        run: go build -v -o weworkbot-darwin-amd64 .
+      - name: Build-darwin-arm
+        run: go build -v -o weworkbot-darwin-arm .
+      - name: Build-darwin-arm64
+        run: go build -v -o weworkbot-darwin-arm64 .
+      - name: Build-dragonfly-amd64
+        run: go build -v -o weworkbot-dragonfly-amd64 .
+      - name: Build-freebsd-386
+        run: go build -v -o weworkbot-freebsd-386 .
+      - name: Build-freebsd-amd64
+        run: go build -v -o weworkbot-freebsd-amd64 .
+      - name: Build-freebsd-arm
+        run: go build -v -o weworkbot-freebsd-arm .
+      - name: Build-linux-386
+        run: go build -v -o weworkbot-linux-386 .
+      - name: Build-linux-amd64
+        run: go build -v -o weworkbot-linux-amd64 .
+      - name: Build-linux-arm
+        run: go build -v -o weworkbot-linux-arm .
+      - name: Build-linux-arm64
+        run: go build -v -o weworkbot-linux-arm64 .
+      - name: Build-linux-ppc64
+        run: go build -v -o weworkbot-linux-ppc64 .
+      - name: Build-linux-ppc64le
+        run: go build -v -o weworkbot-linux-ppc64le .
+      - name: Build-netbsd-386
+        run: go build -v -o weworkbot-netbsd-386 .
+      - name: Build-netbsd-amd64
+        run: go build -v -o weworkbot-netbsd-amd64 .
+      - name: Build-netbsd-arm
+        run: go build -v -o weworkbot-netbsd-arm .
+      - name: Build-openbsd-386
+        run: go build -v -o weworkbot-openbsd-386 .
+      - name: Build-openbsd-amd64
+        run: go build -v -o weworkbot-openbsd-amd64 .
+      - name: Build-openbsd-arm
+        run: go build -v -o weworkbot-openbsd-arm .
+      - name: Build-plan9-386
+        run: go build -v -o weworkbot-plan9-386 .
+      - name: Build-plan9-amd64
+        run: go build -v -o weworkbot-plan9-amd64 .
+      - name: Build-solaris-amd64
+        run: go build -v -o weworkbot-solaris-amd64 .
+      - name: Build-windows-386
+        run: go build -v -o weworkbot-windows-386.exe .
+      - name: Build-windows-amd64
+        run: go build -v -o weworkbot-windows-amd64.exe .
 
       - name: Create Release and Upload Release Asset
         uses: softprops/action-gh-release@v1
@@ -32,5 +80,29 @@ jobs:
           draft: false
           prerelease: false
           files: |
-            weworkbot
+            weworkbot-darwin-386
+            weworkbot-darwin-amd64
+            weworkbot-darwin-arm
+            weworkbot-darwin-arm64
+            weworkbot-dragonfly-amd64
+            weworkbot-freebsd-386
+            weworkbot-freebsd-amd64
+            weworkbot-freebsd-arm
+            weworkbot-linux-386
+            weworkbot-linux-amd64
+            weworkbot-linux-arm
+            weworkbot-linux-arm64
+            weworkbot-linux-ppc64
+            weworkbot-linux-ppc64le
+            weworkbot-netbsd-386
+            weworkbot-netbsd-amd64
+            weworkbot-netbsd-arm
+            weworkbot-openbsd-386
+            weworkbot-openbsd-amd64
+            weworkbot-openbsd-arm
+            weworkbot-plan9-386
+            weworkbot-plan9-amd64
+            weworkbot-solaris-amd64
+            weworkbot-windows-386.exe
+            weworkbot-windows-amd64.exe
             LICENSE
