@@ -19,22 +19,30 @@ jobs:
         with:
           go-version: "1.21"
 
-      - name: Build-darwin-386
-        run: CGO_ENABLED=0 GOOS=darwin GOARCH=386 go build -v -o weworkbot-darwin-386 .
+      - name: Build-android-386
+        run: CGO_ENABLED=0 GOOS=android GOARCH=386 go build -v -o weworkbot-android-386 .
+      - name: Build-android-amd64
+        run: CGO_ENABLED=0 GOOS=android GOARCH=amd64 go build -v -o weworkbot-android-amd64 .
+      - name: Build-android-arm
+        run: CGO_ENABLED=0 GOOS=android GOARCH=arm go build -v -o weworkbot-android-arm .
+      - name: Build-android-arm64
+        run: CGO_ENABLED=0 GOOS=android GOARCH=arm64 go build -v -o weworkbot-android-arm64 .
       - name: Build-darwin-amd64
         run: CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -v -o weworkbot-darwin-amd64 .
-      - name: Build-darwin-arm
-        run: CGO_ENABLED=0 GOOS=darwin GOARCH=arm go build -v -o weworkbot-darwin-arm .
       - name: Build-darwin-arm64
         run: CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 go build -v -o weworkbot-darwin-arm64 .
-      - name: Build-dragonfly-amd64
-        run: CGO_ENABLED=0 GOOS=dragonfly GOARCH=amd64 go build -v -o weworkbot-dragonfly-amd64 .
       - name: Build-freebsd-386
         run: CGO_ENABLED=0 GOOS=freebsd GOARCH=386 go build -v -o weworkbot-freebsd-386 .
       - name: Build-freebsd-amd64
         run: CGO_ENABLED=0 GOOS=freebsd GOARCH=amd64 go build -v -o weworkbot-freebsd-amd64 .
       - name: Build-freebsd-arm
         run: CGO_ENABLED=0 GOOS=freebsd GOARCH=arm go build -v -o weworkbot-freebsd-arm .
+      - name: Build-freebsd-arm64
+        run: CGO_ENABLED=0 GOOS=freebsd GOARCH=arm64 go build -v -o weworkbot-freebsd-arm64 .
+      - name: Build-freebsd-riscv64
+        run: CGO_ENABLED=0 GOOS=freebsd GOARCH=riscv64 go build -v -o weworkbot-freebsd-riscv64 .
+      - name: Build-illumos-amd64
+        run: CGO_ENABLED=0 GOOS=illumos GOARCH=amd64 go build -v -o weworkbot-illumos-amd64 .
       - name: Build-linux-386
         run: CGO_ENABLED=0 GOOS=linux GOARCH=386 go build -v -o weworkbot-linux-386 .
       - name: Build-linux-amd64
@@ -43,34 +51,56 @@ jobs:
         run: CGO_ENABLED=0 GOOS=linux GOARCH=arm go build -v -o weworkbot-linux-arm .
       - name: Build-linux-arm64
         run: CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -v -o weworkbot-linux-arm64 .
+      - name: Build-linux-loong64
+        run: CGO_ENABLED=0 GOOS=linux GOARCH=loong64 go build -v -o weworkbot-linux-loong64 .
+      - name: Build-linux-mips
+        run: CGO_ENABLED=0 GOOS=linux GOARCH=mips go build -v -o weworkbot-linux-mips .
+      - name: Build-linux-mips64
+        run: CGO_ENABLED=0 GOOS=linux GOARCH=mips64 go build -v -o weworkbot-linux-mips64 .
+      - name: Build-linux-mips64le
+        run: CGO_ENABLED=0 GOOS=linux GOARCH=mips64le go build -v -o weworkbot-linux-mips64le .
+      - name: Build-linux-mipsle
+        run: CGO_ENABLED=0 GOOS=linux GOARCH=mipsle go build -v -o weworkbot-linux-mipsle .
       - name: Build-linux-ppc64
         run: CGO_ENABLED=0 GOOS=linux GOARCH=ppc64 go build -v -o weworkbot-linux-ppc64 .
       - name: Build-linux-ppc64le
         run: CGO_ENABLED=0 GOOS=linux GOARCH=ppc64le go build -v -o weworkbot-linux-ppc64le .
+      - name: Build-linux-riscv64
+        run: CGO_ENABLED=0 GOOS=linux GOARCH=riscv64 go build -v -o weworkbot-linux-riscv64 .
+      - name: Build-linux-s390x
+        run: CGO_ENABLED=0 GOOS=linux GOARCH=s390x go build -v -o weworkbot-linux-s390x .
       - name: Build-netbsd-386
         run: CGO_ENABLED=0 GOOS=netbsd GOARCH=386 go build -v -o weworkbot-netbsd-386 .
       - name: Build-netbsd-amd64
         run: CGO_ENABLED=0 GOOS=netbsd GOARCH=amd64 go build -v -o weworkbot-netbsd-amd64 .
       - name: Build-netbsd-arm
         run: CGO_ENABLED=0 GOOS=netbsd GOARCH=arm go build -v -o weworkbot-netbsd-arm .
+      - name: Build-netbsd-arm64
+        run: CGO_ENABLED=0 GOOS=netbsd GOARCH=arm64 go build -v -o weworkbot-netbsd-arm64 .
       - name: Build-openbsd-386
         run: CGO_ENABLED=0 GOOS=openbsd GOARCH=386 go build -v -o weworkbot-openbsd-386 .
       - name: Build-openbsd-amd64
         run: CGO_ENABLED=0 GOOS=openbsd GOARCH=amd64 go build -v -o weworkbot-openbsd-amd64 .
       - name: Build-openbsd-arm
         run: CGO_ENABLED=0 GOOS=openbsd GOARCH=arm go build -v -o weworkbot-openbsd-arm .
+      - name: Build-openbsd-arm64
+        run: CGO_ENABLED=0 GOOS=openbsd GOARCH=arm64 go build -v -o weworkbot-openbsd-arm64 .
       - name: Build-plan9-386
         run: CGO_ENABLED=0 GOOS=plan9 GOARCH=386 go build -v -o weworkbot-plan9-386 .
       - name: Build-plan9-amd64
         run: CGO_ENABLED=0 GOOS=plan9 GOARCH=amd64 go build -v -o weworkbot-plan9-amd64 .
+      - name: Build-plan9-arm
+        run: CGO_ENABLED=0 GOOS=plan9 GOARCH=arm go build -v -o weworkbot-plan9-arm .
       - name: Build-solaris-amd64
         run: CGO_ENABLED=0 GOOS=solaris GOARCH=amd64 go build -v -o weworkbot-solaris-amd64 .
       - name: Build-windows-386
         run: CGO_ENABLED=0 GOOS=windows GOARCH=386 go build -v -o weworkbot-windows-386.exe .
       - name: Build-windows-amd64
         run: CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -v -o weworkbot-windows-amd64.exe .
-      - name: Build-linux-loong64
-        run: CGO_ENABLED=0 GOOS=linux GOARCH=loong64 go build -v -o weworkbot-linux-loong64 .
+      - name: Build-windows-arm
+        run: CGO_ENABLED=0 GOOS=windows GOARCH=arm go build -v -o weworkbot-windows-arm.exe .
+      - name: Build-windows-arm64
+        run: CGO_ENABLED=0 GOOS=windows GOARCH=arm64 go build -v -o weworkbot-windows-arm64.exe .
 
       - name: Create Release and Upload Release Asset
         uses: softprops/action-gh-release@v1
@@ -82,30 +112,45 @@ jobs:
           draft: false
           prerelease: false
           files: |
-            weworkbot-darwin-386
+            weworkbot-android-386
+            weworkbot-android-amd64
+            weworkbot-android-arm
+            weworkbot-android-arm64
             weworkbot-darwin-amd64
-            weworkbot-darwin-arm
             weworkbot-darwin-arm64
-            weworkbot-dragonfly-amd64
             weworkbot-freebsd-386
             weworkbot-freebsd-amd64
             weworkbot-freebsd-arm
+            weworkbot-freebsd-arm64
+            weworkbot-freebsd-riscv64
+            weworkbot-illumos-amd64
             weworkbot-linux-386
             weworkbot-linux-amd64
             weworkbot-linux-arm
             weworkbot-linux-arm64
+            weworkbot-linux-loong64
+            weworkbot-linux-mips
+            weworkbot-linux-mips64
+            weworkbot-linux-mips64le
+            weworkbot-linux-mipsle
             weworkbot-linux-ppc64
             weworkbot-linux-ppc64le
-            weworkbot-linux-loong64
+            weworkbot-linux-riscv64
+            weworkbot-linux-s390x
             weworkbot-netbsd-386
             weworkbot-netbsd-amd64
             weworkbot-netbsd-arm
+            weworkbot-netbsd-arm64
             weworkbot-openbsd-386
             weworkbot-openbsd-amd64
             weworkbot-openbsd-arm
+            weworkbot-openbsd-arm64
             weworkbot-plan9-386
             weworkbot-plan9-amd64
+            weworkbot-plan9-arm
             weworkbot-solaris-amd64
             weworkbot-windows-386.exe
             weworkbot-windows-amd64.exe
+            weworkbot-windows-arm.exe
+            weworkbot-windows-arm64.exe
             LICENSE
