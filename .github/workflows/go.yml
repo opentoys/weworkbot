@@ -49,6 +49,8 @@ jobs:
         run: CGO_ENABLED=0 GOOS=linux GOARCH=arm go build -v -trimpath -ldflags "-s -w -X main.version=${{ steps.version.outputs.version }}" -o weworkbot-linux-arm .
       - name: Build-linux-arm64
         run: CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -v -trimpath -ldflags "-s -w -X main.version=${{ steps.version.outputs.version }}" -o weworkbot-linux-arm64 .
+      - name: Build-android-arm64
+        run: CGO_ENABLED=0 GOOS=android GOARCH=arm64 go build -v -trimpath -ldflags "-s -w -X main.version=${{ steps.version.outputs.version }}" -o weworkbot-android-arm64 .
       - name: Build-linux-loong64
         run: CGO_ENABLED=0 GOOS=linux GOARCH=loong64 go build -v -trimpath -ldflags "-s -w -X main.version=${{ steps.version.outputs.version }}" -o weworkbot-linux-loong64 .
       - name: Build-linux-mips
@@ -105,7 +107,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         with:
           tag_name: ${{ github.ref }}
-          name: Release ${{ github.ref }}
+          name: Release ${{ steps.version.outputs.version }}
           body: TODO New Release.
           draft: false
           prerelease: false
