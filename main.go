@@ -17,120 +17,132 @@ import (
 	"time"
 
 	"github.com/opentoys/wecombot/webot"
-	"github.com/spf13/pflag"
+	"github.com/urfave/cli/v3"
 )
 
 var version = "dev"
 
 var config = &struct {
-	Debug    bool
-	Version  bool
-	Type     string
-	Content  string
-	Key      string
-	File     string
-	Image    string
-	Markdown string
-	Text     string
-	Timeout  string
+	Debug   bool
+	Version bool
+	Type    string
+	Content string
+	Key     string
+	Timeout int64
 }{}
 
-func init() {
-	pflag.BoolVarP(&config.Debug, "debug", "d", false, "print debug message.")
-	pflag.StringVarP(&config.Key, "key", "k", os.Getenv("X_WEWORK_BOT_KEY"), "set wework bot key, support env X_WEWORK_BOT_KEY= for default")
-	pflag.StringVarP(&config.File, "file", "f", "", "set upload and send file, \r\nsupport local path,url, base64;example: ./a.zip, http://a.com/a.zip, data:base,sdjkashd=")
-	pflag.StringVarP(&config.Image, "image", "i", "", "set upload and send image, \r\nsupport local path,url, base64;example: ./a.png, http://a.com/a.jpeg, data:base,sdjkashd=")
-	pflag.StringVar(&config.Timeout, "timeout", "", "set deadline to cancel, support 1s, 2m3s...")
-	pflag.StringVarP(&config.Markdown, "markdown", "m", "", "send markdown v2 message")
-	pflag.StringVarP(&config.Text, "text", "t", "", "send text message")
-}
-
 func main() {
-	if len(os.Args) == 1 {
-		printHelp()
-		return
+	cmd := &cli.Command{
+		Name:                   "webot",
+		Usage:                  "企业微信机器人 cli",
+		UseShortOptionHandling: true,
+		ArgsUsage:              "content",
+		Commands: []*cli.Command{
+			{
+				Name:    "version",
+				Aliases: []string{"v"},
+				Hidden:  true,
+				Action: func(ctx context.Context, c *cli.Command) (e error) {
+					fmt.Println(version)
+					os.Exit(0)
+					return
+				},
+			},
+		},
+		Flags: []cli.Flag{
+			&cli.BoolFlag{
+				Name:        "debug",
+				Destination: &config.Debug,
+			},
+			&cli.BoolFlag{
+				Name:     "version",
+				Aliases:  []string{"v"},
+				OnlyOnce: true,
+				Action: func(ctx context.Context, c *cli.Command, _ bool) (e error) {
+					fmt.Println(version)
+					os.Exit(0)
+					return
+				},
+			},
+			&cli.StringFlag{
+				Name:        "key",
+				Aliases:     []string{"k"},
+				DefaultText: os.Getenv("X_WEWORK_BOT_KEY"),
+				Usage:       "set wework bot key, support env X_WEWORK_BOT_KEY=",
+				Destination: &config.Key,
+			},
+			&cli.StringFlag{
+				Name:        "type",
+				Aliases:     []string{"t"},
+				Usage:       "send message type: text|markdown,md|file|image",
+				DefaultText: "text",
+				Destination: &config.Type,
+			},
+			&cli.Int64Flag{
+				Name:        "timeout",
+				Usage:       "send context timeout",
+				Destination: &config.Timeout,
+			},
+		},
+		Action: func(ctx context.Context, cmd *cli.Command) (e error) {
+			if cmd.NArg() == 0 {
+				cli.DefaultShowRootCommandHelp(cmd)
+				return
+			}
+			if config.Timeout > 0 {
+				var cancel func()
+				ctx, cancel = context.WithTimeout(ctx, time.Duration(config.Timeout)*time.Second)
+				defer cancel()
+			}
+			config.Content = cmd.Args().First()
+			e = send(ctx, config.Key, config.Type, config.Content)
+			return
+		},
 	}
-	switch os.Args[1] {
-	case "version", "v":
-		fmt.Printf("Usage of %s:\n", os.Args[0])
-		fmt.Println(version)
-		return
-	case "help", "h", "-help", "--help", "-h", "--h":
-		printHelp()
-		return
-	}
-	pflag.Parse()
-
-	if config.Key == "" {
-		fmt.Println("key must be set")
-		printHelp()
-		return
-	}
-
-	bot := webot.New(config.Key)
-
-	if config.Timeout != "" {
-		ts, e := time.ParseDuration(config.Timeout)
-		if e != nil {
-			panic(e)
-		}
-		ctx, cancel := context.WithTimeout(context.Background(), ts)
-		defer cancel()
-		bot = bot.WithContext(ctx)
-	}
-
-	if config.Text != "" {
-		_, e := bot.SendText(config.Text)
-		if e != nil {
-			panic(e)
-		}
-		return
-	}
-
-	if config.Markdown != "" {
-		_, e := bot.SendMarkdownV2(config.Markdown)
-		if e != nil {
-			panic(e)
-		}
-		return
-	}
-
-	if config.File != "" {
-		buf, name, e := Path2bytes(config.File)
-		if e != nil {
-			panic(e)
-		}
-		resp, e := bot.UploadMedia(bytes.NewBuffer(buf), name, http.DetectContentType(buf))
-		if e != nil {
-			panic(e)
-		}
-		if !resp.IsOK() {
-			fmt.Println(resp.ErrMsg)
-		}
-		_, e = bot.SendFile(resp.MediaID)
-		if e != nil {
-			panic(e)
-		}
-		return
-	}
-
-	if config.Image != "" {
-		buf, _, e := Path2bytes(config.Image)
-		if e != nil {
-			panic(e)
-		}
-		_, e = bot.SendImage(base64.RawStdEncoding.EncodeToString(buf), hex.EncodeToString(md5.New().Sum(buf)))
-		if e != nil {
-			panic(e)
-		}
-		return
+	e := cmd.Run(context.Background(), os.Args)
+	if e != nil {
+		panic(e)
 	}
 }
 
-func printHelp() {
-	fmt.Printf("Usage of %s:\n\n", os.Args[0])
-	pflag.PrintDefaults()
-	fmt.Println("\r\n Wewrok bot doc: https://developer.work.weixin.qq.com/document/path/91770.")
+func send(_ context.Context, key, typ, content string) (e error) {
+	bot := webot.New(key)
+	switch typ {
+	case "file":
+		e = send_file(bot, content)
+	case "image":
+		e = send_image(bot, content)
+	case "md", "markdown":
+		_, e = bot.SendMarkdownV2(content)
+	default:
+		_, e = bot.SendText(content)
+	}
+	return
+}
+
+func send_file(bot *webot.Bot, content string) (e error) {
+	buf, name, e := Path2bytes(content)
+	if e != nil {
+		panic(e)
+	}
+	resp, e := bot.UploadMedia(bytes.NewBuffer(buf), name, http.DetectContentType(buf))
+	if e != nil {
+		panic(e)
+	}
+	if !resp.IsOK() {
+		fmt.Println(resp.ErrMsg)
+	}
+	_, e = bot.SendFile(resp.MediaID)
+	return
+}
+
+func send_image(bot *webot.Bot, content string) (e error) {
+	buf, _, e := Path2bytes(content)
+	if e != nil {
+		panic(e)
+	}
+	_, e = bot.SendImage(base64.RawStdEncoding.EncodeToString(buf), hex.EncodeToString(md5.New().Sum(buf)))
+	return
 }
 
 func Path2bytes(s string) (buf []byte, name string, e error) {
