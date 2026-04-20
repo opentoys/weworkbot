@@ -33,10 +33,11 @@ var config = &struct {
 
 func main() {
 	cmd := &cli.Command{
-		Name:                   "webot",
-		Usage:                  "企业微信机器人 cli",
-		UseShortOptionHandling: true,
-		ArgsUsage:              "content",
+		Name:                          "webot",
+		Usage:                         "企业微信机器人 cli",
+		UseShortOptionHandling:        true,
+		ArgsUsage:                     "content",
+		CustomRootCommandHelpTemplate: cli.RootCommandHelpTemplate + "\r\nWewrok bot doc: https://developer.work.weixin.qq.com/document/path/91770.",
 		Commands: []*cli.Command{
 			{
 				Name:    "version",

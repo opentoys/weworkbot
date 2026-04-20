@@ -5,17 +5,19 @@
 ## 使用
 
 ```
-Usage of main:
+NAME:
+   webot - 企业微信机器人 cli
 
-  -d, --debug             print debug message.
-  -f, --file string       set upload and send file,
-                          support local path,url, base64;example: ./a.zip, http://a.com/a.zip, data:base,sdjkashd=
-  -i, --image string      set upload and send image,
-                          support local path,url, base64;example: ./a.png, http://a.com/a.jpeg, data:base,sdjkashd=
-  -k, --key string        set wework bot key, support env X_WEWORK_BOT_KEY= for default (default "4cc96c9e-4a3f-4188-8df7-e6300c8fcca7")
-  -m, --markdown string   send markdown v2 message
-  -t, --text string       send text message
-      --timeout string    set deadline to cancel, support 1s, 2m3s...
+USAGE:
+   webot [global options] content
 
- Wewrok bot doc: https://developer.work.weixin.qq.com/document/path/91770.
+GLOBAL OPTIONS:
+   --debug
+   --version, -v
+   --key string, -k string   set wework bot key, support env X_WEWORK_BOT_KEY= (default: )
+   --type string, -t string  send message type: text|markdown,md|file|image (default: text)
+   --timeout int             send context timeout (default: 0)
+   --help, -h                show help
+
+Wewrok bot doc: https://developer.work.weixin.qq.com/document/path/91770.
 ```
