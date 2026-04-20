@@ -20,7 +20,7 @@ import (
 	"github.com/spf13/pflag"
 )
 
-var version = "1.0.1"
+var version = "dev"
 
 var config = &struct {
 	Debug    bool
