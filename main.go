@@ -68,7 +68,8 @@ func main() {
 			&cli.StringFlag{
 				Name:        "key",
 				Aliases:     []string{"k"},
-				DefaultText: os.Getenv("X_WEWORK_BOT_KEY"),
+				Value:       os.Getenv("X_WEWORK_BOT_KEY"),
+				HideDefault: true,
 				Usage:       "set wework bot key, support env X_WEWORK_BOT_KEY=",
 				Destination: &config.Key,
 			},
