@@ -16,7 +16,7 @@ GLOBAL OPTIONS:
    --version, -v
    --key string, -k string   set wework bot key, support env X_WEWORK_BOT_KEY= (default: )
    --type string, -t string  send message type: text|markdown,md|file|image (default: text)
-   --timeout int             send context timeout (default: 0)
+   --timeout int, --ttl int  send context timeout (default: 0)
    --help, -h                show help
 
 Wewrok bot doc: https://developer.work.weixin.qq.com/document/path/91770.

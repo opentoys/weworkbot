@@ -83,6 +83,7 @@ func main() {
 			&cli.Int64Flag{
 				Name:        "timeout",
 				Usage:       "send context timeout",
+				Aliases:     []string{"ttl"},
 				Destination: &config.Timeout,
 			},
 		},
